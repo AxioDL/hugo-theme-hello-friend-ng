@@ -1,3 +1,5 @@
-{{ if .Get "src" }}
-    <img src="{{ .Get "src" | safeURL }}" {{ with .Get "alt" }} alt="{{ . | plainify }}" {{ end }} class="{{ with .Get "position"}}{{ . }}{{ else -}} left {{- end }}" {{ with .Get "style" }} style="{{ . | safeCSS }}" {{ end }} />
+{{ $resource := ($.Site.GetPage "section" "images").Resources.GetMatch (.Get "src") }}
+{{ if $resource }}
+{{ $image := $resource.Resize (.Get "resize") }}
+<img src="{{ $image.RelPermalink }}" {{ with .Get "alt" }} alt="{{ . | plainify }}" {{ end }} class="{{ with .Get "position"}}{{ . }}{{ else -}} left {{- end }}" width="{{ $image.Width }}" height="{{ $image.Height }}" style="max-width: 100%; width: auto; height: auto;" />
 {{ end }}

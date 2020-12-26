@@ -1,17 +1,23 @@
 {{ define "main" }}
-    <main aria-role="main">
-        <div>
-            <h1>{{ .Site.Title }}</h1>
+<main aria-role="main">
+    <div style="max-width: 800px">
+        {{ $resource := ($.Site.GetPage "section" "images").Resources.GetMatch "urde.png" }}
+        {{ if $resource }}
+        {{ $image := $resource.Resize "x400" }}
+        <img class="center" src="{{ $image.RelPermalink }}" width="{{ $image.Width }}" height="{{ $image.Height }}">
+        {{ end }}
+        <!-- {{ $resource := .Resources.Match "header" }}
+        {{ if $resource }}
+        {{ $image := $resource.Resize "x500" }}
+        <img class="homepage-image" {{ with .Params.image }}src="{{ . }}"{{ end }} alt="{{ .Title }}">
+        {{ end }} -->
 
-            {{- with .Site.Params.homeSubtitle }}
-                <p>{{.}}</p>
-            {{- end }}
+        <h1>{{ .Title }}</h1>
 
-            {{- with .Site.Params.social }}
-                <div>
-                    {{ partial "social-icons.html" . }}
-                </div>
-            {{- end }}
+        <div class="homepage-content">
+            <!-- Note that the content for index.html, as a sort of list page, will pull from content/_index.md -->
+            {{.Content}}
         </div>
-    </main>
+    </div>
+</main>
 {{ end }}
